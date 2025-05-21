@@ -1,20 +1,22 @@
-version: '3.8'
-
 services:
   oracle-db:
     image: gvenzl/oracle-xe:21-slim
-    container_name: oracle_db
+    container_name: oracle_xe
     restart: unless-stopped
     ports:
       - "1521:1521"
-      - "5500:5500"
     environment:
-      ORACLE_PASSWORD: Oracle123!
-      APP_USER: admin
-      APP_USER_PASSWORD: admin
+      - ORACLE_PWD=oracle123
     volumes:
-      - ../database/schema:/opt/oracle/scripts/setup
-      - oracle_data:/opt/oracle/oradata
+      - ./oracle/init:/opt/oracle/scripts/startup
 
-volumes:
-  oracle_data:
+  php-app:
+    build:
+      context: ../
+      dockerfile: docker/php/Dockerfile
+    container_name: php-app
+    ports:
+      - "8080:80"
+    volumes:
+      - ../:/var/www
+

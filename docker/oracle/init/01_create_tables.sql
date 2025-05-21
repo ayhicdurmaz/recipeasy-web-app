@@ -206,3 +206,4 @@ create table users (
                        deleted_at    date,
                        role_id       number(10) not null,
                        primary key (id));
+
